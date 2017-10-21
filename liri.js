@@ -3,12 +3,14 @@ var keys = require('./keys.js');
 var fs = require('fs');
 var request = require('request');
 var twitter = require('twitter');
-var Spotify = require('node-spotify-api');
-
 var T = new twitter(keys);
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys);
+
 
 var command = process.argv[2];
-var input = process.argv[3]
+var input = process.argv[3];
+var artist = process.argv[4];
 
 
 //  --------------------- Process --------------------------
@@ -48,8 +50,26 @@ function myTweets() {
 };
 
 function spotifyThisSong() {
+    if (!input) {
+        spotify.search({ type: 'track', query: 'The Sign', artist: "Ace of Base" }, function(err, data) {
+            console.log(data.tracks);
+            // console.log("Artist: " + );
+            // console.log("Song Title: " + );
+            // console.log("Preview Link: " + );
+            // console.log("Album: " + );
+        });
+    };
+    spotify.search({ type: 'track', query: input, artist: artist }, function(err, data) {
 
-
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        console.log(data.tracks);
+        // console.log("Artist: " + );
+        // console.log("Song Title: " + );
+        // console.log("Preview Link: " + );
+        // console.log("Album: " + );
+    });
 
 };
 
