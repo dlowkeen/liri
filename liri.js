@@ -40,6 +40,7 @@ function myTweets() {
     }
     var arr = [];
     T.get('/search/tweets.json', params, function(error, tweets, response) {
+        console.log(tweets);
         for (var i = 0; i < tweets.statuses.length; i++) {
             arr.push(tweets.statuses[i].text);
         };
@@ -52,11 +53,10 @@ function myTweets() {
 function spotifyThisSong() {
     if (!input) {
         spotify.search({ type: 'track', query: 'The Sign', artist: "Ace of Base" }, function(err, data) {
-            console.log(data.tracks);
-            // console.log("Artist: " + );
-            // console.log("Song Title: " + );
-            // console.log("Preview Link: " + );
-            // console.log("Album: " + );
+            console.log("Artist: " + data.tracks.items[0].artists[0].name);
+            console.log("Song Title: " + data.tracks.items[0].name);
+            console.log("Preview Link: " + data.tracks.items[0].preview_url);
+            console.log("Album: " + data.tracks.items[0].album.name);
         });
     };
     spotify.search({ type: 'track', query: input, artist: artist }, function(err, data) {
@@ -64,11 +64,10 @@ function spotifyThisSong() {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        console.log(data.tracks);
-        // console.log("Artist: " + );
-        // console.log("Song Title: " + );
-        // console.log("Preview Link: " + );
-        // console.log("Album: " + );
+        console.log("Artist: " + data.tracks.items[0].artists[0].name);
+        console.log("Song Title: " + data.tracks.items[0].name);
+        console.log("Preview Link: " + data.tracks.items[0].preview_url);
+        console.log("Album: " + data.tracks.items[0].album.name);
     });
 
 };
@@ -94,12 +93,29 @@ function movieThis() {
 
 function doWhatItSays() {
     fs.readFile("random.txt", "utf8", function(error, data) {
-        // If the code experiences any errors it will log the error to the console.
         if (error) {
             return console.log(error);
         }
         var dataArr = data.split(",");
         command = dataArr[0];
-        console.log(dataArr);
+        input = dataArr[1];
+            console.log(dataArr);
+            console.log(command);
+            console.log(input);
+
+        switch (command) {
+            case "my-tweets":
+                myTweets();
+                break;
+            case "spotify-this-song":
+                spotifyThisSong();
+                break;
+            case "movie-this":
+                movieThis();
+                break;
+            case "do-what-it-says":
+                doWhatItSays();
+                break;
+        }
     });
 };
